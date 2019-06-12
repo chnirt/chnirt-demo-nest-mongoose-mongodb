@@ -3,23 +3,28 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
+type CatDto {
+  id: String!
+  name: String!
+  age: Int!
+  breed: String!
+}
+
 input CatInput {
   name: String!
   age: Int!
   breed: String!
 }
 
-type CreateCatDto {
-  name: String!
-  age: Int!
-  breed: String!
-}
-
 type Mutation {
-  createCat(input: CatInput!): CreateCatDto!
+  createCat(input: CatInput!): CatDto!
+  updateCat(input: CatInput!, id: String!): CatDto!
+  deleteCat(id: String!): Boolean!
+  deleteAll: Boolean!
 }
 
 type Query {
   hello: String!
-  cats: [CreateCatDto!]!
+  cats: [CatDto!]!
+  cat(id: String!): CatDto!
 }

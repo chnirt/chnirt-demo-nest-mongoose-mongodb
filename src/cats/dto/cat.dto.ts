@@ -1,7 +1,9 @@
 import { ObjectType, Field, Int } from 'type-graphql';
 
 @ObjectType()
-export class CreateCatDto {
+export class CatDto {
+  @Field()
+  readonly id: string;
   @Field()
   readonly name: string;
   @Field(() => Int)

@@ -4,7 +4,6 @@ import { AppService } from './app.service';
 import { GraphQLModule } from '@nestjs/graphql';
 import { CatsModule } from './cats/cats.module';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ConfigModule } from './config/config.module';
 
 @Module({
   imports: [
@@ -14,9 +13,8 @@ import { ConfigModule } from './config/config.module';
     }),
     MongooseModule.forRoot(
       'mongodb://chnirt:chin04071803@ds055690.mlab.com:55690/nest-graphql',
-      { useNewUrlParser: true },
+      { useNewUrlParser: true, useFindAndModify: false, useCreateIndex: true },
     ),
-    ConfigModule,
   ],
   controllers: [AppController],
   providers: [AppService],

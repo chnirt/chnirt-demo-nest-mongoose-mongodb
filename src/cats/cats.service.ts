@@ -2,22 +2,40 @@ import { Model } from 'mongoose';
 import { Injectable, Inject } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Cat } from './interfaces/cat.interface';
-import { CreateCatDto } from './dto/create-cat.dto';
+import { CatInput } from './inputs/cat.input';
 
 @Injectable()
 export class CatsService {
   constructor(
-    // @Inject('CAT_MODEL')
     @InjectModel('Cat')
     private readonly catModel: Model<Cat>,
   ) {}
 
-  async create(createCatDto: CreateCatDto): Promise<Cat> {
-    const createdCat = new this.catModel(createCatDto);
+  async findAll(): Promise<Cat[]> {
+    return await this.catModel.find().exec();
+  }
+
+  async findById(id: string): Promise<Cat> {
+    return await this.catModel.findById(id).exec();
+  }
+
+  async create(catInput: CatInput): Promise<Cat> {
+    const createdCat = new this.catModel(catInput);
     return await createdCat.save();
   }
 
-  async findAll(): Promise<Cat[]> {
-    return await this.catModel.find().exec();
+  async updateCat(id: string, catInput: CatInput): Promise<Cat> {
+    const updatedCat = await this.catModel.findOneAndUpdate(id, catInput, {
+      new: true,
+    });
+    return updatedCat;
+  }
+
+  async deleteCat(id: string): Promise<boolean> {
+    return (await this.catModel.findOneAndDelete(id)) ? true : false;
+  }
+
+  async deleteAll(): Promise<boolean> {
+    return (await this.catModel.deleteMany({})) ? true : false;
   }
 }
